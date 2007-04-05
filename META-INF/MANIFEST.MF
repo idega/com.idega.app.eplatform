@@ -10,4 +10,5 @@ Bundle-Localization: plugin
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.ui,
  com.idega.app.eplatform.appservermanager
-Eclipse-AutoStart: true
+Eclipse-LazyStart: true
+Export-Package: com.idega.app.eplatform

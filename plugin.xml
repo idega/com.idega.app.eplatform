@@ -56,7 +56,7 @@
                value="%aboutText"/>
          <property
                name="aboutImage"
-               value="icons/eclipse_lg.gif"/>
+               value="splash.gif"/>
          <property
                name="preferenceCustomization"
                value="plugin_customization.ini"/>

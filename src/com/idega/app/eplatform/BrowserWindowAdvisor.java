@@ -44,7 +44,7 @@ public class BrowserWindowAdvisor extends WorkbenchWindowAdvisor {
      */
     public void preWindowOpen() {
         IWorkbenchWindowConfigurer configurer = getWindowConfigurer();
-        configurer.setInitialSize(new Point(800, 600));
+        configurer.setInitialSize(new Point(1024, 768));
         
         // Default window title is the product name, so don't need to set it
         // explicitly anymore.

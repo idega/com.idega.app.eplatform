@@ -99,16 +99,16 @@ public class BrowserApp implements IPlatformRunnable {
 		window.dispose();
 	}
 
-	public void paintSplash(Display display) {
-		Splash splash = new Splash("/Users/tryggvil/Desktop/eplatform-splash.png", display);
-		splash.show();
-		try {
-			Thread.sleep(3000);
-		}
-		catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		splash.dispose();
-	}
+//	public void paintSplash(Display display) {
+//		Splash splash = new Splash("/Users/tryggvil/Desktop/eplatform-splash.png", display);
+//		splash.show();
+//		try {
+//			Thread.sleep(3000);
+//		}
+//		catch (InterruptedException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		splash.dispose();
+//	}
 }
