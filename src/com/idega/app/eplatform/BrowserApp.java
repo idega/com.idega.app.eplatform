@@ -8,11 +8,17 @@
  ******************************************************************************/
 package com.idega.app.eplatform;
 
-import org.eclipse.core.runtime.IPlatformRunnable;
+import org.eclipse.equinox.app.IApplication;
+import org.eclipse.equinox.app.IApplicationContext;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
+
 import com.idega.app.eplatform.appservermanager.AppserverManager;
 import com.idega.app.eplatform.appservermanager.AppservermanagerPlugin;
+
+import edu.stanford.ejalbert.exception.BrowserLaunchingInitializingException;
+import edu.stanford.ejalbert.exception.UnsupportedOperatingSystemException;
 
 /**
  * The application class for the RCP Browser Example. Creates and runs the
@@ -28,7 +34,7 @@ import com.idega.app.eplatform.appservermanager.AppservermanagerPlugin;
  * 
  * @since 3.0
  */
-public class BrowserApp implements IPlatformRunnable {
+public class BrowserApp implements IApplication {
 
 	/**
 	 * Constructs a new <code>BrowserApp</code>.
@@ -37,12 +43,10 @@ public class BrowserApp implements IPlatformRunnable {
 		// do nothing
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.core.boot.IPlatformRunnable#run(java.lang.Object)
+	/* (non-Javadoc)
+	 * @see org.eclipse.equinox.app.IApplication#start(org.eclipse.equinox.app.IApplicationContext)
 	 */
-	public Object run(Object args) throws Exception {
+	public Object start(IApplicationContext context) throws Exception {
 		Display display = PlatformUI.createDisplay();
 		try {
 			displayStartupMessage(display);
@@ -55,7 +59,22 @@ public class BrowserApp implements IPlatformRunnable {
 			if (display != null)
 				display.dispose();
 		}
-		// return null;
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.eclipse.equinox.app.IApplication#stop()
+	 */
+	public void stop() {
+		final IWorkbench workbench = PlatformUI.getWorkbench();
+		if (workbench == null)
+			return;
+		final Display display = workbench.getDisplay();
+		display.syncExec(new Runnable() {
+			public void run() {
+				if (!display.isDisposed())
+					workbench.close();
+			}
+		});
 	}
 
 	private AppserverManager getManager() {
@@ -97,18 +116,24 @@ public class BrowserApp implements IPlatformRunnable {
 			}
 		}
 		window.dispose();
+		
+		//TODO find the right place for this
+		openInBrowser();
 	}
-
-//	public void paintSplash(Display display) {
-//		Splash splash = new Splash("/Users/tryggvil/Desktop/eplatform-splash.png", display);
-//		splash.show();
-//		try {
-//			Thread.sleep(3000);
-//		}
-//		catch (InterruptedException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		splash.dispose();
-//	}
+	
+	protected void openInBrowser(){
+		edu.stanford.ejalbert.BrowserLauncher launcher;
+		try {
+			launcher = new edu.stanford.ejalbert.BrowserLauncher();
+			launcher.openURLinBrowser("FireFox", "http://localhost:8080/workspace/content/");
+	
+		} catch (BrowserLaunchingInitializingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (UnsupportedOperatingSystemException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 }

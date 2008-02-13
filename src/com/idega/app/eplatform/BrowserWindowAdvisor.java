@@ -62,7 +62,8 @@ public class BrowserWindowAdvisor extends WorkbenchWindowAdvisor {
         return new BrowserActionBarAdvisor(actionBarConfigurer);
     }
     
-//  Uncomment the code below for a custom window layout
+//  Uncomment the code below for a custom window layout (add back the missing imports using Ctrl+Shift+O) 
+    
       public void createWindowContents(Shell shell) {
           IWorkbenchWindowConfigurer configurer = getWindowConfigurer();
           Menu menuBar = configurer.createMenuBar();

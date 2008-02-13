@@ -47,7 +47,7 @@
             name="%productName">
          <property
                name="appName"
-               value="%swtAppName"/>
+               value="%productName"/>
          <property
                name="windowImages"
                value="icons/eplatform16.gif,icons/eplatform32.gif"/>
