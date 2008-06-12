@@ -36,6 +36,10 @@ import edu.stanford.ejalbert.exception.UnsupportedOperatingSystemException;
  */
 public class BrowserApp implements IApplication {
 
+	
+	public final static boolean TABBED_UI=false;
+	public final static boolean HISTORY_ENABLED=false;
+	public final static boolean LOCATIONBAR_ENABLED=false;
 	/**
 	 * Constructs a new <code>BrowserApp</code>.
 	 */
@@ -117,23 +121,7 @@ public class BrowserApp implements IApplication {
 		}
 		window.dispose();
 		
-		//TODO find the right place for this
-		openInBrowser();
 	}
 	
-	protected void openInBrowser(){
-		edu.stanford.ejalbert.BrowserLauncher launcher;
-		try {
-			launcher = new edu.stanford.ejalbert.BrowserLauncher();
-			launcher.openURLinBrowser("FireFox", "http://localhost:8080/workspace/content/");
-	
-		} catch (BrowserLaunchingInitializingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (UnsupportedOperatingSystemException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
+
 }

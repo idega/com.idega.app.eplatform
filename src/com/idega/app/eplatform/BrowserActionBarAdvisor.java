@@ -46,8 +46,9 @@ import org.eclipse.ui.application.IActionBarConfigurer;
  */
 public class BrowserActionBarAdvisor extends ActionBarAdvisor {
 
-	private IAction newWindowAction, newTabAction, quitAction, historyAction, aboutAction;
-    private RetargetAction backAction, forwardAction, stopAction, refreshAction; 
+	private IAction newWindowAction, quitAction, aboutAction, historyAction, newTabAction;
+    private RetargetAction backAction, forwardAction, stopAction, refreshAction, openinbrowserAction; 
+    
 
     public BrowserActionBarAdvisor(IActionBarConfigurer configurer) {
         super(configurer);
@@ -60,24 +61,26 @@ public class BrowserActionBarAdvisor extends ActionBarAdvisor {
         newWindowAction.setText("&New Window");
         register(newWindowAction);
 		
-		newTabAction = new Action("New &Tab") { //$NON-NLS-1$
-		    int counter = 0;
-		    { setId("newTab");
-              setActionDefinitionId(IBrowserConstants.COMMAND_PREFIX + "newTab"); } //$NON-NLS-1$
-            public void run() {
-                try {
-                    String secondaryId = Integer.toString(++counter);
-                    IWorkbenchPage page = window.getActivePage();
-                    if (page != null) {
-                        page.showView(IBrowserConstants.BROWSER_VIEW_ID, secondaryId, IWorkbenchPage.VIEW_ACTIVATE);
-                    }
-                } catch (PartInitException e) {
-                    e.printStackTrace();
-                }
-            }
-		};
-        register(newTabAction);
-		
+        if(BrowserApp.TABBED_UI){
+			newTabAction = new Action("New &Tab") { //$NON-NLS-1$
+			    int counter = 0;
+			    { setId("newTab");
+	              setActionDefinitionId(IBrowserConstants.COMMAND_PREFIX + "newTab"); } //$NON-NLS-1$
+	            public void run() {
+	                try {
+	                    String secondaryId = Integer.toString(++counter);
+	                    IWorkbenchPage page = window.getActivePage();
+	                    if (page != null) {
+	                        page.showView(IBrowserConstants.BROWSER_VIEW_ID, secondaryId, IWorkbenchPage.VIEW_ACTIVATE);
+	                    }
+	                } catch (PartInitException e) {
+	                    e.printStackTrace();
+	                }
+	            }
+			};
+	        register(newTabAction);
+        }
+        
 		quitAction = ActionFactory.QUIT.create(window);
         register(quitAction);
 		
@@ -107,30 +110,38 @@ public class BrowserActionBarAdvisor extends ActionBarAdvisor {
 		window.getPartService().addPartListener(refreshAction);
 		register(refreshAction);
 		
-		historyAction = new Action("History", IAction.AS_CHECK_BOX) { //$NON-NLS-1$
-		    { setId("history");
-              setActionDefinitionId(IBrowserConstants.COMMAND_PREFIX + "history"); } //$NON-NLS-1$
-		    public void run() {
-		        try {
-		            IWorkbenchPage page = window.getActivePage();
-		            if (page != null) {
-		                IViewPart historyView = page.findView(IBrowserConstants.HISTORY_VIEW_ID);
-		                if (historyView == null) {
-		                    page.showView(IBrowserConstants.HISTORY_VIEW_ID);
-		                    setChecked(true);
-		                }
-		                else {
-		                    page.hideView(historyView);
-		                    setChecked(false);
-		                }
-		            }
-                } catch (PartInitException e) {
-                    e.printStackTrace();
-                }
-		    }
-		};
-        register(historyAction);
-
+		if(BrowserApp.HISTORY_ENABLED){
+			historyAction = new Action("History", IAction.AS_CHECK_BOX) { //$NON-NLS-1$
+			    { setId("history");
+	              setActionDefinitionId(IBrowserConstants.COMMAND_PREFIX + "history"); } //$NON-NLS-1$
+			    public void run() {
+			        try {
+			            IWorkbenchPage page = window.getActivePage();
+			            if (page != null) {
+			                IViewPart historyView = page.findView(IBrowserConstants.HISTORY_VIEW_ID);
+			                if (historyView == null) {
+			                    page.showView(IBrowserConstants.HISTORY_VIEW_ID);
+			                    setChecked(true);
+			                }
+			                else {
+			                    page.hideView(historyView);
+			                    setChecked(false);
+			                }
+			            }
+	                } catch (PartInitException e) {
+	                    e.printStackTrace();
+	                }
+			    }
+			};
+	        register(historyAction);
+		}
+		
+		openinbrowserAction = new RetargetAction("openinbrowser", "Open in Browser");
+		openinbrowserAction.setActionDefinitionId(IBrowserConstants.COMMAND_PREFIX + "openinbrowser"); //$NON-NLS-1$
+		openinbrowserAction.setToolTipText("Open in Browser");
+		window.getPartService().addPartListener(openinbrowserAction);
+		register(openinbrowserAction);
+		
 		aboutAction = ActionFactory.ABOUT.create(window);
         register(aboutAction);
 	}
@@ -139,8 +150,10 @@ public class BrowserActionBarAdvisor extends ActionBarAdvisor {
 		IMenuManager fileMenu = new MenuManager("&File", "file");  //$NON-NLS-2$
 		menuBar.add(fileMenu);
         fileMenu.add(newWindowAction);
-        fileMenu.add(newTabAction);
-		fileMenu.add(new Separator());
+        if(BrowserApp.TABBED_UI){
+        	fileMenu.add(newTabAction);
+        }
+        fileMenu.add(new Separator());
         fileMenu.add(quitAction);
 		
 		IMenuManager viewMenu = new MenuManager("&View", "view");  //$NON-NLS-2$
@@ -150,8 +163,10 @@ public class BrowserActionBarAdvisor extends ActionBarAdvisor {
         viewMenu.add(stopAction);
         viewMenu.add(refreshAction);
 		viewMenu.add(new Separator("views")); //$NON-NLS-1$
-        viewMenu.add(historyAction);
-
+		if(BrowserApp.HISTORY_ENABLED){
+			viewMenu.add(historyAction);
+		}
+		
 		IMenuManager helpMenu = new MenuManager("&Help", "help");  //$NON-NLS-2$
 		menuBar.add(helpMenu);
         helpMenu.add(aboutAction);
@@ -174,5 +189,6 @@ public class BrowserActionBarAdvisor extends ActionBarAdvisor {
 
         toolBar.add(stopAction);
         toolBar.add(refreshAction);
+        toolBar.add(openinbrowserAction);
 	}
 }

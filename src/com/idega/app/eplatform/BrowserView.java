@@ -51,6 +51,9 @@ import org.eclipse.ui.WorkbenchException;
 import org.eclipse.ui.handlers.IHandlerService;
 import org.eclipse.ui.part.ViewPart;
 
+import edu.stanford.ejalbert.exception.BrowserLaunchingInitializingException;
+import edu.stanford.ejalbert.exception.UnsupportedOperatingSystemException;
+
 
 /**
  * The Browser view.  This consists of a <code>Browser</code> control, and an
@@ -99,6 +102,29 @@ public class BrowserView extends ViewPart {
 			browser.refresh();
 		}
 	};
+	
+	private Action openInBrowserAction = new Action("OpenInBrwoser") {
+		public void run() {
+			String urlString = browser.getUrl();
+			openInBrowser(urlString);
+		}
+	};
+	
+	protected void openInBrowser(String urlString){
+		edu.stanford.ejalbert.BrowserLauncher launcher;
+		try {
+			launcher = new edu.stanford.ejalbert.BrowserLauncher();
+			//launcher.openURLinBrowser("FireFox", "http://localhost:8080/workspace/content/");
+			launcher.openURLinBrowser(urlString);
+		} catch (BrowserLaunchingInitializingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (UnsupportedOperatingSystemException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	
 	/**
 	 * The easter egg action.  
@@ -167,25 +193,31 @@ public class BrowserView extends ViewPart {
 	
 	private Browser createBrowser(Composite parent, final IActionBars actionBars) {
 		
-		GridLayout gridLayout = new GridLayout();
-		gridLayout.numColumns = 2;
-		parent.setLayout(gridLayout);
+		if(BrowserApp.LOCATIONBAR_ENABLED){
+			GridLayout gridLayout = new GridLayout();
+			gridLayout.numColumns = 2;
+			parent.setLayout(gridLayout);
+		}
+		GridData data=null;
+
+		if(BrowserApp.LOCATIONBAR_ENABLED){
+
+			data = new GridData();
+			data = new GridData();
+			Label labelAddress = new Label(parent, SWT.NONE);
+			labelAddress.setText("A&ddress");
 		
-		Label labelAddress = new Label(parent, SWT.NONE);
-		labelAddress.setText("A&ddress");
-		
-		location = new Text(parent, SWT.BORDER);
-		GridData data = new GridData();
-		data = new GridData();
-		data.horizontalAlignment = GridData.FILL;
-		data.grabExcessHorizontalSpace = true;
-		location.setLayoutData(data);
+			location = new Text(parent, SWT.BORDER);
+			data.horizontalAlignment = GridData.FILL;
+			data.grabExcessHorizontalSpace = true;
+			location.setLayoutData(data);
+		}
 
 		browser = new Browser(parent, SWT.NONE);
 		data = new GridData();
 		data.horizontalAlignment = GridData.FILL;
 		data.verticalAlignment = GridData.FILL;
-		data.horizontalSpan = 2;
+		data.horizontalSpan = 0;
 		data.grabExcessHorizontalSpace = true;
 		data.grabExcessVerticalSpace = true;
 		browser.setLayoutData(data);
@@ -247,11 +279,13 @@ public class BrowserView extends ViewPart {
                 BrowserView.this.close();
             }
         });
-		location.addSelectionListener(new SelectionAdapter() {
-			public void widgetDefaultSelected(SelectionEvent e) {
-				browser.setUrl(location.getText());
-			}
-		});
+        if(BrowserApp.LOCATIONBAR_ENABLED){
+			location.addSelectionListener(new SelectionAdapter() {
+				public void widgetDefaultSelected(SelectionEvent e) {
+					browser.setUrl(location.getText());
+				}
+			});
+        }
 		
 		// Hook the navigation actons as handlers for the retargetable actions
 		// defined in BrowserActionBuilder.
@@ -259,6 +293,8 @@ public class BrowserView extends ViewPart {
 		actionBars.setGlobalActionHandler("forward", forwardAction); //$NON-NLS-1$
 		actionBars.setGlobalActionHandler("stop", stopAction); //$NON-NLS-1$
 		actionBars.setGlobalActionHandler("refresh", refreshAction); //$NON-NLS-1$
+		actionBars.setGlobalActionHandler("openinbrowser", openInBrowserAction); //$NON-NLS-1$
+		
 		
 		// Register the easter egg action with the key binding service,
 		// allowing it to be invoked directly via keypress, 
