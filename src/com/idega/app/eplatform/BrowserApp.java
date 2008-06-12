@@ -15,6 +15,7 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
 
 import com.idega.app.eplatform.appservermanager.AppserverManager;
+import com.idega.app.eplatform.appservermanager.AppserverStartedListener;
 import com.idega.app.eplatform.appservermanager.AppservermanagerPlugin;
 
 import edu.stanford.ejalbert.exception.BrowserLaunchingInitializingException;
@@ -112,6 +113,15 @@ public class BrowserApp implements IApplication {
 			}
 		};
 		statusHandlerThread.start();
+		
+		
+		AppserverStartedListener startedListener = new AppserverStartedListener(){
+			public void notifyStarted() {
+				display.wake();
+			}
+		};
+		getManager().setStartedListener(startedListener);
+		
 		 // Set up the event loop.
 		while (!isStarted()) {
 			if (!display.readAndDispatch()) {
