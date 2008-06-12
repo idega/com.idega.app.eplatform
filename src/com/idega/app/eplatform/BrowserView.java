@@ -217,7 +217,7 @@ public class BrowserView extends ViewPart {
 		data = new GridData();
 		data.horizontalAlignment = GridData.FILL;
 		data.verticalAlignment = GridData.FILL;
-		data.horizontalSpan = 0;
+		data.horizontalSpan = 2;
 		data.grabExcessHorizontalSpace = true;
 		data.grabExcessVerticalSpace = true;
 		browser.setLayoutData(data);
@@ -257,12 +257,14 @@ public class BrowserView extends ViewPart {
 				status.setMessage(event.text);
 			}
 		});
-		browser.addLocationListener(new LocationAdapter() {
-			public void changed(LocationEvent event) {
-			    if (event.top)
-			        location.setText(event.location);
-			}
-		});
+		if(BrowserApp.LOCATIONBAR_ENABLED){
+			browser.addLocationListener(new LocationAdapter() {
+				public void changed(LocationEvent event) {
+				    if (event.top)
+				        location.setText(event.location);
+				}
+			});
+		}
 		browser.addTitleListener(new TitleListener() {
             public void changed(TitleEvent event) {
                 setPartName(event.title);

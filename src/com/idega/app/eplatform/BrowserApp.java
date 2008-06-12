@@ -117,7 +117,7 @@ public class BrowserApp implements IApplication {
 		
 		AppserverStartedListener startedListener = new AppserverStartedListener(){
 			public void notifyStarted() {
-				display.wake();
+				//display.wake();
 			}
 		};
 		getManager().setStartedListener(startedListener);
