@@ -18,9 +18,6 @@ import com.idega.app.eplatform.appservermanager.AppserverManager;
 import com.idega.app.eplatform.appservermanager.AppserverStartedListener;
 import com.idega.app.eplatform.appservermanager.AppservermanagerPlugin;
 
-import edu.stanford.ejalbert.exception.BrowserLaunchingInitializingException;
-import edu.stanford.ejalbert.exception.UnsupportedOperatingSystemException;
-
 /**
  * The application class for the RCP Browser Example. Creates and runs the
  * Workbench, passing a <code>BrowserAdvisor</code> as the workbench advisor.
