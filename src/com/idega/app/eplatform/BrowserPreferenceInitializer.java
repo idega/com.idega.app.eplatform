@@ -24,13 +24,12 @@ public class BrowserPreferenceInitializer extends AbstractPreferenceInitializer 
     }
 
     /* (non-Javadoc)
-     * @see org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer#initializeDefaultPreferences()
      */
     public void initializeDefaultPreferences() {
         Preferences prefs = BrowserPlugin.getDefault().getPluginPreferences();
         //prefs.setDefault(IBrowserConstants.PREF_HOME_PAGE, "http://eclipse.org");  //$NON-NLS-1$
         //prefs.setDefault(IBrowserConstants.PREF_HOME_PAGE, "http://localhost:8080/content");  //$NON-NLS-1$
-        prefs.setDefault(IBrowserConstants.PREF_HOME_PAGE, AppservermanagerPlugin.getPlugin().getManager().getMainAppURL());
+        prefs.setDefault(IBrowserConstants.PREF_HOME_PAGE, AppservermanagerPlugin.getPlugin().getManager().getMainAppserver().getMainAppURL());
     }
 
 }
