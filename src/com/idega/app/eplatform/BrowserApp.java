@@ -14,9 +14,9 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
 
-import com.idega.app.eplatform.appservermanager.AppserverInstance;
+import com.idega.app.eplatform.appservermanager.WebappInstance;
 import com.idega.app.eplatform.appservermanager.AppserverManager;
-import com.idega.app.eplatform.appservermanager.AppserverStartedListener;
+import com.idega.app.eplatform.appservermanager.WebappStartedListener;
 import com.idega.app.eplatform.appservermanager.AppservermanagerPlugin;
 
 /**
@@ -87,20 +87,20 @@ public class BrowserApp implements IApplication {
 	
 
 	protected boolean isStarted() {
-		return getManager().getMainAppserver().isStarted();
+		return getManager().getMainWebapp().isStarted();
 	}
 
 	public void displayStartupMessage(final Display display) {
 		final StartupMessageWindow window = new StartupMessageWindow(display);
 		window.show();
-		window.setMessageText(getManager().getMainAppserver().getStatus());
+		window.setMessageText(getManager().getMainWebapp().getStatus());
 		final Thread statusHandlerThread = new Thread() {
 
 			public void run() {
 				while (!isStarted()) {
 					display.asyncExec(new Runnable() {
 						public void run() {
-							window.setMessageText(getManager().getMainAppserver().getStatus());
+							window.setMessageText(getManager().getMainWebapp().getStatus());
 						}
 					});
 					try {
@@ -115,12 +115,12 @@ public class BrowserApp implements IApplication {
 		statusHandlerThread.start();
 		
 		
-		AppserverStartedListener startedListener = new AppserverStartedListener(){
-			public void notifyStarted(AppserverInstance instance) {
+		WebappStartedListener startedListener = new WebappStartedListener(){
+			public void notifyStarted(WebappInstance instance) {
 				display.wake();
 			}
 		};
-		getManager().getMainAppserver().setStartedListener(startedListener);
+		getManager().getMainWebapp().setStartedListener(startedListener);
 		
 		 // Set up the event loop.
 		while (!isStarted()) {

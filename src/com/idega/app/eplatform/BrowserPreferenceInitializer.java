@@ -29,7 +29,7 @@ public class BrowserPreferenceInitializer extends AbstractPreferenceInitializer 
         Preferences prefs = BrowserPlugin.getDefault().getPluginPreferences();
         //prefs.setDefault(IBrowserConstants.PREF_HOME_PAGE, "http://eclipse.org");  //$NON-NLS-1$
         //prefs.setDefault(IBrowserConstants.PREF_HOME_PAGE, "http://localhost:8080/content");  //$NON-NLS-1$
-        prefs.setDefault(IBrowserConstants.PREF_HOME_PAGE, AppservermanagerPlugin.getPlugin().getManager().getMainAppserver().getMainAppURL());
+        prefs.setDefault(IBrowserConstants.PREF_HOME_PAGE, AppservermanagerPlugin.getPlugin().getManager().getMainWebapp().getMainAppURL());
     }
 
 }
