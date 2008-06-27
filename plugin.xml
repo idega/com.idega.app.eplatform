@@ -50,13 +50,13 @@
                value="%productName"/>
          <property
                name="windowImages"
-               value="icons/eplatform16.gif,icons/eplatform32.gif"/>
+               value="icons/eplatform4-16.png,icons/eplatform4-32.png,icons/eplatform4-48.png,icons/eplatform4-64.png,icons/eplatform4-128.png"/>
          <property
                name="aboutText"
                value="%aboutText"/>
          <property
                name="aboutImage"
-               value="splash.gif"/>
+               value="splash.png"/>
          <property
                name="preferenceCustomization"
                value="plugin_customization.ini"/>

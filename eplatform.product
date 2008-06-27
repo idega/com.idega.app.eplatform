@@ -24,11 +24,18 @@
    <launcher name="eplatform">
       <macosx icon="/com.idega.app.eplatform/icons/eplatform4.icns"/>
       <solaris/>
-      <win useIco="true">
+      <win useIco="false">
          <ico path="/com.idega.app.eplatform/icons/eplatform4.ico"/>
-         <bmp/>
+         <bmp
+            winSmallHigh="/com.idega.app.eplatform/icons/eplatform4-16.bmp"
+            winSmallLow="/com.idega.app.eplatform/icons/eplatform4-16-8.bmp"
+            winMediumHigh="/com.idega.app.eplatform/icons/eplatform4-32.bmp"
+            winMediumLow="/com.idega.app.eplatform/icons/eplatform4-32-8.bmp"
+            winLargeHigh="/com.idega.app.eplatform/icons/eplatform4-48.bmp"
+            winLargeLow="/com.idega.app.eplatform/icons/eplatform4-48-8.bmp"/>
       </win>
    </launcher>
+
 
    <vm>
    </vm>
@@ -56,7 +63,7 @@
       <plugin id="org.eclipse.jface.databinding"/>
       <plugin id="org.eclipse.osgi"/>
       <plugin id="org.eclipse.swt"/>
-      <plugin id="org.eclipse.swt.carbon.macosx"/>
+      <plugin id="org.eclipse.swt.carbon.macosx" fragment="true"/>
       <plugin id="org.eclipse.swt.gtk.linux.ppc"/>
       <plugin id="org.eclipse.swt.gtk.linux.x86"/>
       <plugin id="org.eclipse.swt.gtk.linux.x86_64"/>
@@ -64,9 +71,9 @@
       <plugin id="org.eclipse.swt.motif.aix.ppc"/>
       <plugin id="org.eclipse.swt.motif.hpux.PA_RISC"/>
       <plugin id="org.eclipse.swt.motif.linux.x86"/>
-      <plugin id="org.eclipse.swt.win32.win32.x86" fragment="true"/>
+      <plugin id="org.eclipse.swt.win32.win32.x86"/>
       <plugin id="org.eclipse.ui"/>
-      <plugin id="org.eclipse.ui.carbon"/>
+      <plugin id="org.eclipse.ui.carbon" fragment="true"/>
       <plugin id="org.eclipse.ui.workbench"/>
    </plugins>
 
