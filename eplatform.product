@@ -1,33 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?pde version="3.1"?>
+<?pde version="3.4"?>
 
 <product name="%productName" id="com.idega.app.eplatform.product" application="com.idega.app.eplatform.app" useFeatures="false">
 
    <aboutInfo>
-      <image path="/com.idega.app.eplatform/splash.gif"/>
+      <image path="/com.idega.app.eplatform/splash.png"/>
       <text>
          %aboutText
       </text>
    </aboutInfo>
 
-   <configIni use="default"/>
+   <configIni use="default">
+   </configIni>
 
    <launcherArgs>
       <vmArgs>-Xmx256M -Dfile.encoding=UTF-8</vmArgs>
    </launcherArgs>
 
-   <windowImages i16="/com.idega.app.eplatform/icons/eplatform16.gif" i32="/com.idega.app.eplatform/icons/eplatform32.gif"/>
+   <windowImages i16="/com.idega.app.eplatform/icons/eplatform4-16.png" i32="/com.idega.app.eplatform/icons/eplatform4-32.png" i48="/com.idega.app.eplatform/icons/eplatform4-48.png" i64="/com.idega.app.eplatform/icons/eplatform4-64.png" i128="/com.idega.app.eplatform/icons/eplatform4-128.png"/>
 
    <splash
       location="com.idega.app.eplatform" />
    <launcher name="eplatform">
-      <macosx icon="/com.idega.app.eplatform/eplatform.icns"/>
+      <macosx icon="/com.idega.app.eplatform/icons/eplatform4.icns"/>
       <solaris/>
       <win useIco="true">
-         <ico path="/com.idega.app.eplatform/eplatform.ico"/>
+         <ico path="/com.idega.app.eplatform/icons/eplatform3.ico"/>
          <bmp/>
       </win>
    </launcher>
+
+
+   <vm>
+   </vm>
 
    <plugins>
       <plugin id="com.ibm.icu"/>
