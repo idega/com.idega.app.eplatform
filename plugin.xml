@@ -61,6 +61,18 @@
          <property
                name="preferenceCustomization"
                value="plugin_customization.ini"/>
+         <property
+               name="startupForegroundColor"
+               value="000000">
+         </property>
+         <property
+               name="startupMessageRect"
+               value="7,252,445,20">
+         </property>
+         <property
+               name="startupProgressRect"
+               value="5,275,445,15">
+         </property>
       </product>
    </extension>
    <extension
@@ -141,6 +153,9 @@
             class="com.idega.app.eplatform.splashHandlers.ExtensibleSplashHandler"
             id="com.idega.app.eplatform.splashHandlers.extensible">
       </splashHandler>
+   </extension>
+   <extension
+   		 point="org.eclipse.ui.splashHandlers">
       <splashHandlerProductBinding
             productId="com.idega.app.eplatform.product"
             splashId="com.idega.app.eplatform.splashHandlers.extensible">

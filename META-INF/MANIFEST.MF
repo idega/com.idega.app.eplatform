@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: com.idega.app.eplatform; singleton:=true
-Bundle-Version: 4.0.0
+Bundle-Version: 4.1.3
 Bundle-ClassPath: eplatform.jar
 Bundle-Activator: com.idega.app.eplatform.BrowserPlugin
 Bundle-Vendor: %providerName

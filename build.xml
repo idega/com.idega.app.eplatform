@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="com.idega.app.eplatform" default="build.jars" basedir=".">
+
+	<property name="p2.build.repo" value="file:${buildDirectory}/buildRepo"/>
+	<property name="basews" value="${ws}"/>
+	<property name="baseos" value="${os}"/>
+	<property name="basearch" value="${arch}"/>
+	<property name="basenl" value="${nl}"/>
+	<property name="bundleId" value="com.idega.app.eplatform"/>
+	<property name="bundleVersion" value="4.1.3"/>
+	<property name="p2.publishonerror" value="false"/>
+
+	<!-- Compiler settings. -->
+	<property name="javacFailOnError" value="false"/>
+	<property name="javacDebugInfo" value="on"/>
+	<property name="javacVerbose" value="false"/>
+	<property name="logExtension" value=".log"/>
+	<property name="compilerArg" value=""/>
+	<property name="javacSource" value="1.3"/>
+	<property name="javacTarget" value="1.2"/>
+	<condition property="dir_bootclasspath" value="${java.home}/../Classes">
+		<os family="mac"/>
+	</condition>
+	<property name="dir_bootclasspath" value="${java.home}/lib"/>
+	<path id="path_bootclasspath">
+		<fileset dir="${dir_bootclasspath}">
+			<include name="*.jar"/>
+		</fileset>
+	</path>
+	<property name="bootclasspath" refid="path_bootclasspath"/>
+	<property name="bundleJavacSource" value="${javacSource}"/>
+	<property name="bundleJavacTarget" value="${javacTarget}"/>
+	<property name="bundleBootClasspath" value="${bootclasspath}"/>
+
+	<target name="init" depends="properties">
+		<condition property="pluginTemp" value="${buildTempFolder}/plugins"		>
+			<isset property="buildTempFolder"/>
+		</condition>
+		<property name="pluginTemp" value="${basedir}"/>
+		<condition property="build.result.folder" value="${pluginTemp}/com.idega.app.eplatform_4.1.3"		>
+			<isset property="buildTempFolder"/>
+		</condition>
+		<property name="build.result.folder" value="${basedir}"/>
+		<property name="temp.folder" value="${basedir}/temp.folder"/>
+		<property name="plugin.destination" value="${basedir}"/>
+		<condition property="p2.publish.parts" value="true"		>
+			<istrue value="${p2.gathering}"/>
+		</condition>
+		<property name="compilation.problem.marker" value="${build.result.folder}/compilation.problem"/>
+		<condition property="compilation.problem.marker.exists" value="true"		>
+			<and>
+			<available file="${compilation.problem.marker}"/>
+			<isfalse value="p2.publishonerror"/>
+			</and>
+		</condition>
+	</target>
+
+	<target name="properties" if="eclipse.running">
+		<property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter"/>
+
+	</target>
+
+	<target name="build.update.jar" depends="init" description="Build the plug-in: com.idega.app.eplatform for an update site.">
+		<delete dir="${temp.folder}"/>
+		<mkdir dir="${temp.folder}"/>
+		<antcall target="build.jars"/>
+		<antcall target="gather.bin.parts">
+			<param name="destination.temp.folder" value="${temp.folder}/"/>
+		</antcall>
+		<jar destfile="${plugin.destination}/com.idega.app.eplatform_4.1.3.jar" basedir="${temp.folder}/com.idega.app.eplatform_4.1.3" filesetmanifest="merge"/>
+		<delete dir="${temp.folder}"/>
+	</target>
+
+	<target name="eplatform.jar" depends="init" unless="eplatform.jar" description="Create jar: com.idega.app.eplatform eplatform.jar.">
+		<delete dir="${temp.folder}/eplatform.jar.bin"/>
+		<mkdir dir="${temp.folder}/eplatform.jar.bin"/>
+		<path id="eplatform.jar.classpath">
+			<pathelement path="../../../../../../../Applications/eclipse/plugins/org.eclipse.core.runtime_3.5.0.v20090525.jar"/>
+			<pathelement path="../../../../../../../Applications/eclipse/plugins/org.eclipse.osgi_3.5.1.R35x_v20090827.jar"/>
+			<pathelement path="../../../../../../../Applications/eclipse/plugins/javax.transaction_1.1.1.v200909161740.jar"/>
+			<pathelement path="../../../../../../../Applications/eclipse/plugins/org.eclipse.persistence.jpa.equinox.weaving_1.1.2.v20090612-r4475.jar"/>
+			<pathelement path="../../../../../../../Applications/eclipse/plugins/org.eclipse.equinox.common_3.5.1.R35x_v20090807-1100.jar"/>
+			<pathelement path="../../../../../../../Applications/eclipse/plugins/org.eclipse.core.jobs_3.4.100.v20090429-1800.jar"/>
+			<pathelement path="../../../../../../../Applications/eclipse/plugins/org.eclipse.core.runtime.compatibility.registry_3.2.200.v20090429-1800/runtime_registry_compatibility.jar"/>
+			<pathelement path="../../../../../../../Applications/eclipse/plugins/org.eclipse.core.runtime.compatibility.registry_3.2.200.v20090429-1800"/>
+			<pathelement path="../../../../../../../Applications/eclipse/plugins/org.eclipse.equinox.registry_3.4.100.v20090520-1800.jar"/>
+			<pathelement path="../../../../../../../Applications/eclipse/plugins/org.eclipse.equinox.preferences_3.2.300.v20090520-1800.jar"/>
+			<pathelement path="../../../../../../../Applications/eclipse/plugins/org.eclipse.core.contenttype_3.4.1.R35x_v20090826-0451.jar"/>
+			<pathelement path="../../../../../../../Applications/eclipse/plugins/org.eclipse.core.runtime.compatibility.auth_3.2.100.v20090413.jar"/>
+			<pathelement path="../../../../../../../Applications/eclipse/plugins/org.eclipse.equinox.app_1.2.0.v20090520-1800.jar"/>
+			<pathelement path="../../../../../../../Applications/eclipse/plugins/org.eclipse.osgi.services_3.2.0.v20090520-1800.jar"/>
+			<pathelement path="../../../../../../../Applications/eclipse/plugins/javax.servlet_2.5.0.v200806031605.jar"/>
+			<pathelement path="../../../../../../../Applications/eclipse/plugins/org.eclipse.ui_3.5.1.M20090902-1000.jar"/>
+			<pathelement path="../../../../../../../Applications/eclipse/plugins/org.eclipse.ui.cocoa_1.0.0.I20090525-2000.jar"/>
+			<pathelement path="../../../../../../../Applications/eclipse/plugins/org.eclipse.swt_3.5.1.v3555a.jar"/>
+			<pathelement path="../../../../../../../Applications/eclipse/plugins/org.eclipse.swt.cocoa.macosx_3.5.1.v3555a.jar"/>
+			<pathelement path="../../../../../../../Applications/eclipse/plugins/org.eclipse.jface_3.5.1.M20090826-0800.jar"/>
+			<pathelement path="../../../../../../../Applications/eclipse/plugins/org.eclipse.core.commands_3.5.0.I20090525-2000.jar"/>
+			<pathelement path="../../../../../../../Applications/eclipse/plugins/org.eclipse.ui.workbench_3.5.1.M20090826-0800a.jar"/>
+			<pathelement path="../../../../../../../Applications/eclipse/plugins/org.eclipse.ui.workbench.compatibility_3.2.0.I20090429-1800/compatibility.jar"/>
+			<pathelement path="../../../../../../../Applications/eclipse/plugins/org.eclipse.ui.workbench.compatibility_3.2.0.I20090429-1800/e4-workbench.jar"/>
+			<pathelement path="../../../../../../../Applications/eclipse/plugins/org.eclipse.ui.workbench.compatibility_3.2.0.I20090429-1800"/>
+			<pathelement path="../../../../../../../Applications/eclipse/plugins/com.ibm.icu_4.0.1.v20090822.jar"/>
+			<pathelement path="../../../../../../../Applications/eclipse/plugins/org.eclipse.help_3.4.1.v20090805_35x.jar"/>
+			<pathelement path="../../../../../../../Applications/eclipse/plugins/org.eclipse.core.expressions_3.4.100.v20090429-1800.jar"/>
+			<pathelement path="../../../../../../../Applications/eclipse/plugins/org.eclipse.jface.databinding_1.3.1.M20090826-0800.jar"/>
+			<pathelement path="../../../../../../../Applications/eclipse/plugins/org.eclipse.core.databinding.observable_1.2.0.M20090902-0800.jar"/>
+			<pathelement path="../../../../../../../Applications/eclipse/plugins/org.eclipse.core.databinding.property_1.2.0.M20090819-0800.jar"/>
+			<pathelement path="../../../../../../../Applications/eclipse/plugins/org.eclipse.core.databinding_1.2.0.M20090819-0800.jar"/>
+			<pathelement path="../../../../../../../Applications/eclipse/plugins/org.eclipse.core.resources_3.5.1.R35x_v20090826-0451.jar"/>
+			<pathelement path="../../../../../../../Applications/eclipse/plugins/org.eclipse.core.resources.compatibility_3.4.0.v20090505.jar"/>
+			<pathelement path="../../../../../../../Applications/eclipse/plugins/org.eclipse.ant.core_3.2.100.v20090817_r351.jar"/>
+			<pathelement path="../../../../../../../Applications/eclipse/plugins/org.eclipse.core.variables_3.2.200.v20090521.jar"/>
+			<pathelement path="../../../../../../../Applications/eclipse/plugins/org.eclipse.core.filesystem_1.2.0.v20090507.jar"/>
+			<pathelement path="../../../../../../../Applications/eclipse/plugins/org.eclipse.core.filesystem.macosx_1.1.0.v20090112.jar"/>
+			<pathelement path="../com.idega.app.eplatform.appservermanager/bin/"/>
+			<pathelement path="${build.result.folder}/../com.idega.app.eplatform.appservermanager_1.0.0/bin/"/>
+			<pathelement path="${build.result.folder}/../com.idega.app.eplatform.appservermanager/appservermanager.jar"/>
+			<pathelement path="${build.result.folder}/../com.idega.app.eplatform.appservermanager_1.0.0/appservermanager.jar"/>
+			<pathelement path="../com.idega.app.eplatform.appservermanager/bin"/>
+			<pathelement path="${build.result.folder}/../com.idega.app.eplatform.appservermanager_1.0.0/bin"/>
+			<pathelement path="../com.idega.app.eplatform.appservermanager/lib/xercesImpl-2.4.0.jar"/>
+			<pathelement path="${build.result.folder}/../com.idega.app.eplatform.appservermanager_1.0.0/lib/xercesImpl-2.4.0.jar"/>
+			<pathelement path="../com.idega.app.eplatform.appservermanager/lib/ant-1.6.4.jar"/>
+			<pathelement path="${build.result.folder}/../com.idega.app.eplatform.appservermanager_1.0.0/lib/ant-1.6.4.jar"/>
+			<pathelement path="../com.idega.app.eplatform.appservermanager/lib/com.idega.core-4.0.1.jar"/>
+			<pathelement path="${build.result.folder}/../com.idega.app.eplatform.appservermanager_1.0.0/lib/com.idega.core-4.0.1.jar"/>
+			<pathelement path="../com.idega.app.eplatform.appservermanager/lib/com.idega.manager-4.0.2-SNAPSHOT.jar"/>
+			<pathelement path="${build.result.folder}/../com.idega.app.eplatform.appservermanager_1.0.0/lib/com.idega.manager-4.0.2-SNAPSHOT.jar"/>
+			<pathelement path="../com.idega.app.eplatform.appservermanager/lib/maven-model-2.0.8.jar"/>
+			<pathelement path="${build.result.folder}/../com.idega.app.eplatform.appservermanager_1.0.0/lib/maven-model-2.0.8.jar"/>
+			<pathelement path="../com.idega.app.eplatform.appservermanager/lib/maven-repository-metadata-2.0.8.jar"/>
+			<pathelement path="${build.result.folder}/../com.idega.app.eplatform.appservermanager_1.0.0/lib/maven-repository-metadata-2.0.8.jar"/>
+			<pathelement path="../com.idega.app.eplatform.appservermanager/lib/plexus-utils-1.4.6.jar"/>
+			<pathelement path="${build.result.folder}/../com.idega.app.eplatform.appservermanager_1.0.0/lib/plexus-utils-1.4.6.jar"/>
+			<pathelement path="../com.idega.app.eplatform.appservermanager/lib/jug-1.1.2.jar"/>
+			<pathelement path="${build.result.folder}/../com.idega.app.eplatform.appservermanager_1.0.0/lib/jug-1.1.2.jar"/>
+			<pathelement path="../com.idega.app.eplatform.appservermanager/lib/wagon-provider-api-1.0-beta-2.jar"/>
+			<pathelement path="${build.result.folder}/../com.idega.app.eplatform.appservermanager_1.0.0/lib/wagon-provider-api-1.0-beta-2.jar"/>
+			<pathelement path="../com.idega.app.eplatform.appservermanager/lib/cargo-core-uberjar-1.0-SNAPSHOT.jar"/>
+			<pathelement path="${build.result.folder}/../com.idega.app.eplatform.appservermanager_1.0.0/lib/cargo-core-uberjar-1.0-SNAPSHOT.jar"/>
+			<pathelement path="../com.idega.app.eplatform.appservermanager/lib/jetty-6.1.11.jar"/>
+			<pathelement path="${build.result.folder}/../com.idega.app.eplatform.appservermanager_1.0.0/lib/jetty-6.1.11.jar"/>
+			<pathelement path="../com.idega.app.eplatform.appservermanager/lib/jetty-util-6.1.11.jar"/>
+			<pathelement path="${build.result.folder}/../com.idega.app.eplatform.appservermanager_1.0.0/lib/jetty-util-6.1.11.jar"/>
+			<pathelement path="../com.idega.app.eplatform.appservermanager/lib/servlet-api-2.5-6.1.11.jar"/>
+			<pathelement path="${build.result.folder}/../com.idega.app.eplatform.appservermanager_1.0.0/lib/servlet-api-2.5-6.1.11.jar"/>
+		</path>
+		<!-- compile the source code -->
+		<javac destdir="${temp.folder}/eplatform.jar.bin" failonerror="${javacFailOnError}" verbose="${javacVerbose}" debug="${javacDebugInfo}" includeAntRuntime="no" bootclasspath="${bundleBootClasspath}" source="${bundleJavacSource}" target="${bundleJavacTarget}"		>
+			<compilerarg line="${compilerArg}" compiler="${build.compiler}"/>
+			<classpath refid="eplatform.jar.classpath" />
+			<src path="src/"			/>
+			<compilerarg value="@${basedir}/javaCompiler.eplatform.jar.args" compiler="org.eclipse.jdt.core.JDTCompilerAdapter"/>
+			<compilerarg line="-log '${temp.folder}/eplatform.jar.bin${logExtension}'" compiler="org.eclipse.jdt.core.JDTCompilerAdapter"/>
+		</javac>
+		<antcall target="checkCompilationResults"/>
+		<!-- Copy necessary resources -->
+		<copy todir="${temp.folder}/eplatform.jar.bin" failonerror="true" overwrite="false">
+			<fileset dir="src/">
+				<exclude name="**/*.java"/>
+				<exclude name="**/package.htm*"/>
+			</fileset>
+		</copy>
+		<mkdir dir="${build.result.folder}"/>
+		<jar destfile="${build.result.folder}/eplatform.jar" basedir="${temp.folder}/eplatform.jar.bin"/>
+		<delete dir="${temp.folder}/eplatform.jar.bin"/>
+	</target>
+
+	<target name="eplatformsrc.zip" depends="init" unless="eplatformsrc.zip">
+		<mkdir dir="${build.result.folder}"/>
+		<antcall target="zip.eplatformsrc.zip"/>
+	</target>
+	<target name="zip.eplatformsrc.zip">
+		<zip destfile="${build.result.folder}/eplatformsrc.zip" filesonly="false" whenempty="skip" update="false">
+			<fileset dir="src/">
+				<include name="**/*.java"/>
+			</fileset>
+		</zip>
+	</target>
+	<target name="copy.eplatformsrc.zip">
+		<copy todir="${source.destination.folder}/eplatformsrc" failonerror="true" overwrite="true">
+			<fileset dir="src/">
+				<include name="**/*.java"/>
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="build.jars" depends="init" description="Compile classes and build nested jars for the plug-in: com.idega.app.eplatform.">
+		<delete file="${compilation.problem.marker}" quiet="true"/>
+		<available property="eplatform.jar" file="${build.result.folder}/eplatform.jar"/>
+		<antcall target="eplatform.jar"/>
+	</target>
+
+	<target name="checkCompilationResults" if="compilation.error.occured">
+		<echo file="${compilation.problem.marker}" message="com.idega.app.eplatform : compilation.error.occured=${compilation.error.occured}"/>
+	</target>
+
+	<target name="build.sources" depends="init">
+		<available property="eplatformsrc.zip" file="${build.result.folder}/eplatformsrc.zip"/>
+		<antcall target="eplatformsrc.zip"/>
+	</target>
+
+	<target name="publish.bin.parts" depends="init" if="p2.publish.parts" unless="compilation.problem.marker.exists">
+		<mkdir dir="${build.result.folder}/com.idega.app.eplatform_4.1.3"/>
+		<copy todir="${build.result.folder}" failonerror="true" overwrite="true">
+			<fileset dir="${basedir}">
+				<include name="META-INF/MANIFEST.MF"/>
+				<include name="plugin.xml"/>
+				<include name="fragment.xml"/>
+			</fileset>
+		</copy>
+		<antcall target="apitools.generation">
+			<param name="target.folder" value="${build.result.folder}"/>
+			<param name="projectLocation" value="${basedir}"/>
+			<param name="binary.folders" value="${build.result.folder}/eplatform.jar"/>
+			<param name="projectName" value="${bundleId}_${bundleVersion}"/>
+		</antcall>
+		<eclipse.gatherBundle 
+		   metadataRepository="${p2.build.repo}"
+		   artifactRepository="${p2.build.repo}"
+		   buildResultFolder="${build.result.folder}"
+		   baseDirectory="${basedir}"
+		   unpack="true"
+		/>
+	</target>
+
+	<target name="gather.bin.parts" depends="init" if="destination.temp.folder">
+		<mkdir dir="${destination.temp.folder}/com.idega.app.eplatform_4.1.3"/>
+		<copy todir="${destination.temp.folder}/com.idega.app.eplatform_4.1.3" failonerror="true" overwrite="false">
+			<fileset dir="${build.result.folder}">
+				<include name="eplatform.jar"/>
+			</fileset>
+		</copy>
+		<copy todir="${destination.temp.folder}/com.idega.app.eplatform_4.1.3" failonerror="true" overwrite="true">
+			<fileset dir="${basedir}">
+				<include name="icons/"/>
+				<include name="plugin.properties"/>
+				<include name="plugin.xml"/>
+				<include name="*.jar"/>
+				<include name="about.html"/>
+				<include name="readme.html"/>
+				<include name="META-INF/"/>
+				<include name="icons/eplatform4.icns"/>
+				<include name="aboutbanner.png"/>
+				<include name="db.properties.hsqldb"/>
+			</fileset>
+		</copy>
+		<antcall target="apitools.generation">
+			<param name="target.folder" value="${destination.temp.folder}/com.idega.app.eplatform_4.1.3"/>
+			<param name="projectLocation" value="${basedir}"/>
+			<param name="binary.folders" value="${destination.temp.folder}/com.idega.app.eplatform_4.1.3/eplatform.jar"/>
+			<param name="projectName" value="${bundleId}_${bundleVersion}"/>
+		</antcall>
+	</target>
+
+	<target name="build.zips" depends="init">
+	</target>
+
+	<target name="gather.sources" depends="init" if="destination.temp.folder">
+		<mkdir dir="${destination.temp.folder}/com.idega.app.eplatform_4.1.3"/>
+		<copy file="${build.result.folder}/eplatformsrc.zip" todir="${destination.temp.folder}/com.idega.app.eplatform_4.1.3" failonerror="false" overwrite="false"/>
+		<antcall target="copy.src.includes">
+			<param name="source.destination.folder" value="${destination.temp.folder}/com.idega.app.eplatform_4.1.3"/>
+		</antcall>
+	</target>
+
+	<target name="gather.individual.sources" depends="init">
+		<antcall target="copy.eplatformsrc.zip">
+			<param name="source.destination.folder" value="${destination.temp.folder}"/>
+		</antcall>
+		<antcall target="copy.src.includes">
+			<param name="source.destination.folder" value="${destination.temp.folder}"/>
+		</antcall>
+	</target>
+
+	<target name="copy.src.includes" depends="init">
+		<copy todir="${source.destination.folder}" failonerror="false" overwrite="false">
+			<fileset dir="${basedir}">
+				<include name="about.html"/>
+				<include name="readme.html"/>
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="gather.logs" depends="init" if="destination.temp.folder">
+		<mkdir dir="${destination.temp.folder}/com.idega.app.eplatform_4.1.3"/>
+		<copy todir="${destination.temp.folder}/com.idega.app.eplatform_4.1.3" failonerror="false" overwrite="false">
+			<fileset dir="${temp.folder}">
+				<include name="eplatform.jar.bin${logExtension}"/>
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="clean" depends="init" description="Clean the plug-in: com.idega.app.eplatform of all the zips, jars and logs created.">
+		<delete file="${build.result.folder}/eplatform.jar"/>
+		<delete file="${build.result.folder}/eplatformsrc.zip"/>
+		<delete file="${plugin.destination}/com.idega.app.eplatform_4.1.3.jar"/>
+		<delete file="${plugin.destination}/com.idega.app.eplatform_4.1.3.zip"/>
+		<delete dir="${temp.folder}"/>
+		<delete file="${compilation.problem.marker}" quiet="true"/>
+	</target>
+
+	<target name="refresh" depends="init" if="eclipse.running" description="Refresh this folder.">
+		<eclipse.convertPath fileSystemPath="/Users/tryggvil/Documents/idega/Development/eplatform-app/com.idega.app.eplatform" property="resourcePath"/>
+		<eclipse.refreshLocal resource="${resourcePath}" depth="infinite"/>
+	</target>
+
+	<target name="zip.plugin" depends="init" description="Create a zip containing all the elements for the plug-in: com.idega.app.eplatform.">
+		<delete dir="${temp.folder}"/>
+		<mkdir dir="${temp.folder}"/>
+		<antcall target="build.jars"/>
+		<antcall target="build.sources"/>
+		<antcall target="gather.bin.parts">
+			<param name="destination.temp.folder" value="${temp.folder}/"/>
+		</antcall>
+		<antcall target="gather.sources">
+			<param name="destination.temp.folder" value="${temp.folder}/"/>
+		</antcall>
+		<delete>
+			<fileset dir="${temp.folder}">
+				<include name="**/*.bin${logExtension}"/>
+			</fileset>
+		</delete>
+		<zip destfile="${plugin.destination}/com.idega.app.eplatform_4.1.3.zip" basedir="${temp.folder}" filesonly="true" whenempty="skip" update="false"/>
+		<delete dir="${temp.folder}"/>
+	</target>
+
+	<target name="apitools.generation" if="generateAPIDescription">
+		<apitooling.apigeneration  projectName="${projectName}" project="${projectLocation}" binary="${binary.folders}" target="${target.folder}"		/>
+	</target>
+
+</project>
